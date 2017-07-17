@@ -29,6 +29,11 @@ const Todo = ({todo, handleTodoCheckboxChange}) => {
             <span className="todo-title">
                 {todo.title}
             </span>
+            <span className="pull-right">
+                <button className="btn btn-link edit-icon-button">
+                    <i className="glyphicon glyphicon-pencil"/>
+                </button>
+            </span>
         </li>
     );
 };
