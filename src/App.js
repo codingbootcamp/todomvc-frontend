@@ -18,18 +18,39 @@ class App extends Component {
 
     componentWillMount() {
         getAllTodos().then(todos => {
+            const updated_todos = getTodosWithIsLoadingState(todos);
             this.setState({
-                todos,
+                todos: updated_todos,
                 has_loaded: true
             });
         });
     }
 
+    updateAffectedTodoLoadingState(updated_todo) {
+        const updated_todos = this.state.todos.map(todo => {
+            if (todo._id === updated_todo._id) {
+                return {
+                    ...todo,
+                    is_loading: true
+                };
+            }
+            return todo;
+        });
+        this.setState({
+            todos: updated_todos
+        });
+    }
+
     handleTodoCheckboxChange(updated_todo) {
+        this.updateAffectedTodoLoadingState(updated_todo);
+
         updateTodo(updated_todo).then(updated_todo => {
             const updated_todos = this.state.todos.map(todo => {
                 if (todo._id === updated_todo._id) {
-                    return updated_todo;
+                    return {
+                        ...updated_todo,
+                        is_loading: false
+                    };
                 }
                 return todo;
             });
@@ -72,3 +93,7 @@ class App extends Component {
 }
 
 export default App;
+
+function getTodosWithIsLoadingState(todos) {
+    return todos.map(todo => ({...todo, is_loading: false}));
+};

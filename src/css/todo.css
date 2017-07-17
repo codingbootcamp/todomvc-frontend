@@ -11,3 +11,6 @@
 .complete {
     text-decoration: line-through;
 }
+.loading {
+    opacity: 0.4;
+}

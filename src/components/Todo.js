@@ -19,7 +19,8 @@ const Todo = ({todo, handleTodoCheckboxChange}) => {
     };
 
     const li_classes = Classnames({
-        'complete': todo.is_complete
+        'complete': todo.is_complete,
+        'loading': todo.is_loading
     });
 
     return (
