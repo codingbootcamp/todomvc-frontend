@@ -14,6 +14,7 @@ class App extends Component {
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
         this.handleTodoCheckboxChange = this.handleTodoCheckboxChange.bind(this);
+        this.toggleTodoEdit = this.toggleTodoEdit.bind(this);
     }
 
     componentWillMount() {
@@ -49,7 +50,8 @@ class App extends Component {
                 if (todo._id === updated_todo._id) {
                     return {
                         ...updated_todo,
-                        is_loading: false
+                        is_loading: false,
+                        is_editing: false
                     };
                 }
                 return todo;
@@ -58,6 +60,21 @@ class App extends Component {
                 todos: updated_todos
             });
         })
+    }
+
+    toggleTodoEdit(todo_to_edit) {
+        const updated_todos = this.state.todos.map(todo => {
+            if (todo._id === todo_to_edit._id) {
+                return {
+                    ...todo,
+                    is_editing: !todo_to_edit.is_editing
+                };
+            }
+            return todo;
+        });
+        this.setState({
+            todos: updated_todos
+        });
     }
 
     renderAllTodos() {
@@ -72,7 +89,9 @@ class App extends Component {
             return (
                 <Todo key={index}
                     todo={todo}
-                    handleTodoCheckboxChange={this.handleTodoCheckboxChange}/>
+                    handleTodoCheckboxChange={this.handleTodoCheckboxChange}
+                    toggleTodoEdit={this.toggleTodoEdit}
+                />
             );
         })
     }
@@ -95,5 +114,5 @@ class App extends Component {
 export default App;
 
 function getTodosWithIsLoadingState(todos) {
-    return todos.map(todo => ({...todo, is_loading: false}));
+    return todos.map(todo => ({...todo, is_loading: false, is_editing: false}));
 };

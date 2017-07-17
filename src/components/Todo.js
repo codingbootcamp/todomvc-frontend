@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Classnames from 'classnames';
 
-const Todo = ({todo, handleTodoCheckboxChange}) => {
+const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit}) => {
     const handleChange = () =>
         handleTodoCheckboxChange({
             ...todo,
             is_complete: !todo.is_complete
         });
+
+    const toggleEdit = () => toggleTodoEdit(todo);
 
     const renderTodoCheckbox = is_complete => {
         return (
@@ -30,7 +32,8 @@ const Todo = ({todo, handleTodoCheckboxChange}) => {
                 {todo.title}
             </span>
             <span className="pull-right">
-                <button className="btn btn-link edit-icon-button">
+                <button className="btn btn-link edit-icon-button"
+                    onClick={toggleEdit}>
                     <i className="glyphicon glyphicon-pencil"/>
                 </button>
             </span>
@@ -45,5 +48,6 @@ Todo.propTypes = {
         title: PropTypes.string.isRequired,
         is_complete: PropTypes.bool.isRequired
     }),
-    handleTodoCheckboxChange: PropTypes.func.isRequired
+    handleTodoCheckboxChange: PropTypes.func.isRequired,
+    toggleTodoEdit: PropTypes.func.isRequired
 };
