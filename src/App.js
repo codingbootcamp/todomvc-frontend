@@ -11,6 +11,7 @@ class App extends Component {
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
+        this.renderTodoCheckbox = this.renderTodoCheckbox.bind(this);
     }
 
     componentWillMount() {
@@ -22,29 +23,26 @@ class App extends Component {
         });
     }
 
+    renderTodoCheckbox(is_complete) {
+        return (
+            <input type="checkbox" checked={is_complete}/>
+        );
+    }
+
     renderAllTodos() {
         if (!this.state.has_loaded) {
             return (
-                <tr>
-                    <td colSpan={3}>
-                        Loading... please wait
-                    </td>
-                </tr>
+                <li>
+                    Loading... please wait
+                </li>
             );
         }
         return this.state.todos.map((todo, index) => {
             return (
-                <tr key={index}>
-                    <td>
-                        {todo._id}
-                    </td>
-                    <td>
-                        {todo.title}
-                    </td>
-                    <td>
-                        {todo.is_complete ? 'DONE' : 'PENDING'}
-                    </td>
-                </tr>
+                <li key={index}>
+                    {this.renderTodoCheckbox(todo.is_complete)}
+                    {todo.title}
+                </li>
             );
         })
     }
@@ -54,24 +52,9 @@ class App extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>
-                                        Todo
-                                    </th>
-                                    <th>
-                                        Status
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.renderAllTodos()}
-                            </tbody>
-                        </table>
+                        <ul>
+                            {this.renderAllTodos()}
+                        </ul>
                     </div>
                 </div>
             </div>
