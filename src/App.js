@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Classnames from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
 import {getAllTodos} from './services/TodoService';
+import Todo from './components/Todo';
 
 class App extends Component {
     constructor(props) {
@@ -13,7 +13,6 @@ class App extends Component {
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
-        this.renderTodoCheckbox = this.renderTodoCheckbox.bind(this);
     }
 
     componentWillMount() {
@@ -25,14 +24,6 @@ class App extends Component {
         });
     }
 
-    renderTodoCheckbox(is_complete) {
-        return (
-            <input
-                type="checkbox"
-                checked={is_complete}/>
-        );
-    }
-
     renderAllTodos() {
         if (!this.state.has_loaded) {
             return (
@@ -42,16 +33,9 @@ class App extends Component {
             );
         }
         return this.state.todos.map((todo, index) => {
-            const li_classes = Classnames({
-                'complete': todo.is_complete
-            });
             return (
-                <li key={index} className={li_classes}>
-                    {this.renderTodoCheckbox(todo.is_complete)}
-                    <span className="todo-title">
-                        {todo.title}
-                    </span>
-                </li>
+                <Todo key={index}
+                    todo={todo}/>
             );
         })
     }
