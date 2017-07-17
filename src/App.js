@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
-import {getAllTodos} from './services/TodoService';
+import {getAllTodos, updateTodo} from './services/TodoService';
 import Todo from './components/Todo';
 
 class App extends Component {
@@ -13,6 +13,7 @@ class App extends Component {
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
+        this.handleTodoCheckboxChange = this.handleTodoCheckboxChange.bind(this);
     }
 
     componentWillMount() {
@@ -22,6 +23,20 @@ class App extends Component {
                 has_loaded: true
             });
         });
+    }
+
+    handleTodoCheckboxChange(updated_todo) {
+        updateTodo(updated_todo).then(updated_todo => {
+            const updated_todos = this.state.todos.map(todo => {
+                if (todo._id === updated_todo._id) {
+                    return updated_todo;
+                }
+                return todo;
+            });
+            this.setState({
+                todos: updated_todos
+            });
+        })
     }
 
     renderAllTodos() {
@@ -35,7 +50,8 @@ class App extends Component {
         return this.state.todos.map((todo, index) => {
             return (
                 <Todo key={index}
-                    todo={todo}/>
+                    todo={todo}
+                    handleTodoCheckboxChange={this.handleTodoCheckboxChange}/>
             );
         })
     }

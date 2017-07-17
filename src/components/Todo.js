@@ -2,12 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Classnames from 'classnames';
 
-const Todo = ({todo}) => {
+const Todo = ({todo, handleTodoCheckboxChange}) => {
+    const handleChange = () =>
+        handleTodoCheckboxChange({
+            ...todo,
+            is_complete: !todo.is_complete
+        });
+
     const renderTodoCheckbox = is_complete => {
         return (
             <input
                 type="checkbox"
-                checked={is_complete}/>
+                checked={is_complete}
+                onChange={handleChange}/>
         );
     };
 
@@ -31,5 +38,6 @@ Todo.propTypes = {
     todo: PropTypes.shape({
         title: PropTypes.string.isRequired,
         is_complete: PropTypes.bool.isRequired
-    })
+    }),
+    handleTodoCheckboxChange: PropTypes.func.isRequired
 };
