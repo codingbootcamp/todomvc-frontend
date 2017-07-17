@@ -9,7 +9,12 @@ class App extends Component {
         super(props);
         this.state = {
             todos: [],
-            has_loaded: false
+            has_loaded: false,
+            new_todo: {
+                title: '',
+                is_saving: false,
+                is_visible: false
+            }
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
@@ -18,6 +23,8 @@ class App extends Component {
         this.handleTodoChange = this.handleTodoChange.bind(this);
         this.saveUpdatedTodo = this.saveUpdatedTodo.bind(this);
         this.handleTodoDelete = this.handleTodoDelete.bind(this);
+        this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
+        this.toggleNewTodoEdit = this.toggleNewTodoEdit.bind(this);
     }
 
     componentWillMount() {
@@ -62,6 +69,27 @@ class App extends Component {
             this.setState({
                 todos: updated_todos
             });
+        });
+    }
+
+    toggleNewTodoEdit() {
+        this.setState({
+            ...this.state,
+            new_todo: {
+                ...this.state.new_todo,
+                is_visible: !this.state.new_todo.is_visible
+            }
+        })
+    }
+
+    handleNewTodoChange(e) {
+        const updated_title = e.target.value;
+        this.setState({
+            ...this.state,
+            new_todo: {
+                ...this.state.new_todo,
+                title: updated_title
+            }
         });
     }
 
@@ -147,14 +175,46 @@ class App extends Component {
         })
     }
 
+    renderNewTodoForm() {
+        if (!this.state.new_todo.is_visible) {
+            return null;
+        }
+        return (
+            <form action="">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Add a new todo"
+                    value={this.state.new_todo.title}
+                    onChange={this.handleNewTodoChange}
+                />
+            </form>
+        )
+    }
+
+    renderAddTodoButton() {
+        if (!this.state.new_todo.is_visible) {
+            return (
+                <button className="btn btn-primary" onClick={this.toggleNewTodoEdit}>
+                    <i className="glyphicon glyphicon-plus-sign"/>
+                </button>
+            );
+        }
+        return null;
+    }
+
     render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <ul className="todo-list">
-                            {this.renderAllTodos()}
-                        </ul>
+                        <div className="todo-list">
+                            {this.renderAddTodoButton()}
+                            {this.renderNewTodoForm()}
+                            <ul>
+                                {this.renderAllTodos()}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

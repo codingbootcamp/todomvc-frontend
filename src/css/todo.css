@@ -1,14 +1,18 @@
 .todo-list {
-    list-style: none;
     width: 250px;
     margin: 100px auto;
     font-size: 15px;
 }
 
+.todo-list ul {
+    list-style: none;
+    padding: 0;
+}
+
 .todo-list li {
     border: 1px solid #eee;
     padding: 5px;
-    margin: 2px;
+    margin: 2px 0;
 }
 
 .todo-title {
