@@ -23,3 +23,12 @@ export function deleteTodo(todo_id) {
             .delete(`${uri_prefix}/todos/${todo_id}`)
             .then(response => response.data);
 }
+
+export function saveTodo(todo_title) {
+    const new_todo = {
+        title: todo_title
+    };
+    return axios
+            .post(`${uri_prefix}/todos/`, new_todo)
+            .then(response => response.data);
+}

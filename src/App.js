@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
-import {getAllTodos, updateTodo, deleteTodo} from './services/TodoService';
+import {getAllTodos, updateTodo, deleteTodo, saveTodo} from './services/TodoService';
 import Todo from './components/Todo';
+
+const new_todo = {
+    title: '',
+    is_saving: false,
+    is_visible: false
+};
 
 class App extends Component {
     constructor(props) {
@@ -10,11 +16,7 @@ class App extends Component {
         this.state = {
             todos: [],
             has_loaded: false,
-            new_todo: {
-                title: '',
-                is_saving: false,
-                is_visible: false
-            }
+            new_todo
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
@@ -25,6 +27,7 @@ class App extends Component {
         this.handleTodoDelete = this.handleTodoDelete.bind(this);
         this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
         this.toggleNewTodoEdit = this.toggleNewTodoEdit.bind(this);
+        this.handleNewTodoSave = this.handleNewTodoSave.bind(this);
     }
 
     componentWillMount() {
@@ -90,6 +93,25 @@ class App extends Component {
                 ...this.state.new_todo,
                 title: updated_title
             }
+        });
+    }
+
+    handleNewTodoSave(e) {
+        e.preventDefault();
+        this.setState({
+            ...this.state,
+            new_todo: {
+                ...this.state.new_todo,
+                is_saving: true
+            }
+        });
+        saveTodo(this.state.new_todo.title).then(new_todo => {
+            const todos = [...this.state.todos, new_todo];
+            const updated_todos = getTodosWithIsLoadingState(todos);
+            this.setState({
+                todos: updated_todos,
+                new_todo
+            });
         });
     }
 
@@ -180,7 +202,7 @@ class App extends Component {
             return null;
         }
         return (
-            <form action="">
+            <form onSubmit={this.handleNewTodoSave}>
                 <input
                     type="text"
                     className="form-control"
