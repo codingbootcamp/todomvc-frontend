@@ -27,7 +27,9 @@ class App extends Component {
 
     renderTodoCheckbox(is_complete) {
         return (
-            <input type="checkbox" checked={is_complete}/>
+            <input
+                type="checkbox"
+                checked={is_complete}/>
         );
     }
 
@@ -46,7 +48,9 @@ class App extends Component {
             return (
                 <li key={index} className={li_classes}>
                     {this.renderTodoCheckbox(todo.is_complete)}
-                    {todo.title}
+                    <span className="todo-title">
+                        {todo.title}
+                    </span>
                 </li>
             );
         })
@@ -57,7 +61,7 @@ class App extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <ul>
+                        <ul className="todo-list">
                             {this.renderAllTodos()}
                         </ul>
                     </div>

@@ -1,3 +1,13 @@
+.todo-list {
+    list-style: none;
+    width: 200px;
+    margin: 100px auto;
+    font-size: 15px;
+}
+
+.todo-title {
+    margin: 0 5px;
+}
 .complete {
     text-decoration: line-through;
 }
