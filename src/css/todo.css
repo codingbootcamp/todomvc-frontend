@@ -19,6 +19,10 @@
     padding: 0;
 }
 
+.delete-icon-button {
+    padding: 0 0 0 5px;
+}
+
 .complete {
     text-decoration: line-through;
 }

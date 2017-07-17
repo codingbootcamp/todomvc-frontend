@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
-import {getAllTodos, updateTodo} from './services/TodoService';
+import {getAllTodos, updateTodo, deleteTodo} from './services/TodoService';
 import Todo from './components/Todo';
 
 class App extends Component {
@@ -17,6 +17,7 @@ class App extends Component {
         this.toggleTodoEdit = this.toggleTodoEdit.bind(this);
         this.handleTodoChange = this.handleTodoChange.bind(this);
         this.saveUpdatedTodo = this.saveUpdatedTodo.bind(this);
+        this.handleTodoDelete = this.handleTodoDelete.bind(this);
     }
 
     componentWillMount() {
@@ -113,6 +114,17 @@ class App extends Component {
         });
     }
 
+    handleTodoDelete(todo_id) {
+        const todo_to_delete = this.state.todos.filter(todo => todo._id === todo_id)[0];
+        this.updateAffectedTodoLoadingState(todo_to_delete);
+        deleteTodo(todo_id).then(() => {
+            const updated_todos = this.state.todos.filter(todo => todo._id !== todo_id);
+            this.setState({
+                todos: updated_todos
+            });
+        })
+    }
+
     renderAllTodos() {
         if (!this.state.has_loaded) {
             return (
@@ -129,6 +141,7 @@ class App extends Component {
                     toggleTodoEdit={this.toggleTodoEdit}
                     handleTodoChange={this.handleTodoChange}
                     saveUpdatedTodo={this.saveUpdatedTodo}
+                    handleTodoDelete={this.handleTodoDelete}
                 />
             );
         })

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Classnames from 'classnames';
 
-const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange, saveUpdatedTodo}) => {
+const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange, saveUpdatedTodo, handleTodoDelete}) => {
     const handleChange = () =>
         handleTodoCheckboxChange({
             ...todo,
@@ -19,7 +19,12 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
     const handleTodoSave = e => {
         e.preventDefault();
         saveUpdatedTodo(todo);
-    }
+    };
+
+    const deleteTodo = e => {
+        e.preventDefault();
+        handleTodoDelete(todo._id);
+    };
 
     const renderTodoCheckbox = is_complete => {
         return (
@@ -59,6 +64,10 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
                     onClick={toggleEdit}>
                     <i className="glyphicon glyphicon-pencil"/>
                 </button>
+                <button className="btn btn-link delete-icon-button"
+                    onClick={deleteTodo}>
+                    <i className="glyphicon glyphicon-trash"/>
+                </button>
             </span>
         </li>
     );
@@ -74,5 +83,6 @@ Todo.propTypes = {
     handleTodoCheckboxChange: PropTypes.func.isRequired,
     toggleTodoEdit: PropTypes.func.isRequired,
     handleTodoChange: PropTypes.func.isRequired,
-    saveUpdatedTodo: PropTypes.func.isRequired
+    saveUpdatedTodo: PropTypes.func.isRequired,
+    handleTodoDelete: PropTypes.func.isRequired
 };

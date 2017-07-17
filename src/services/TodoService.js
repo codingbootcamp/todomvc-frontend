@@ -17,3 +17,9 @@ export function updateTodo(updated_todo) {
             .patch(`${uri_prefix}/todos/${updated_todo._id}`, todo)
             .then(response => response.data);
 }
+
+export function deleteTodo(todo_id) {
+    return axios
+            .delete(`${uri_prefix}/todos/${todo_id}`)
+            .then(response => response.data);
+}
