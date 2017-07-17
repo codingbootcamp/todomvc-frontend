@@ -15,6 +15,8 @@ class App extends Component {
         this.renderAllTodos = this.renderAllTodos.bind(this);
         this.handleTodoCheckboxChange = this.handleTodoCheckboxChange.bind(this);
         this.toggleTodoEdit = this.toggleTodoEdit.bind(this);
+        this.handleTodoChange = this.handleTodoChange.bind(this);
+        this.saveUpdatedTodo = this.saveUpdatedTodo.bind(this);
     }
 
     componentWillMount() {
@@ -59,7 +61,7 @@ class App extends Component {
             this.setState({
                 todos: updated_todos
             });
-        })
+        });
     }
 
     toggleTodoEdit(todo_to_edit) {
@@ -77,6 +79,40 @@ class App extends Component {
         });
     }
 
+    handleTodoChange(todo_id, updated_todo_title) {
+        const updated_todos = this.state.todos.map(todo => {
+            if (todo._id === todo_id) {
+                return {
+                    ...todo,
+                    title: updated_todo_title
+                };
+            }
+            return todo;
+        });
+        this.setState({
+            todos: updated_todos
+        });
+    }
+
+    saveUpdatedTodo(updated_todo) {
+        this.updateAffectedTodoLoadingState(updated_todo);
+        updateTodo(updated_todo).then(updated_todo => {
+            const updated_todos = this.state.todos.map(todo => {
+                if (todo._id === updated_todo._id) {
+                    return {
+                        ...updated_todo,
+                        is_loading: false,
+                        is_editing: false
+                    };
+                }
+                return todo;
+            });
+            this.setState({
+                todos: updated_todos
+            });
+        });
+    }
+
     renderAllTodos() {
         if (!this.state.has_loaded) {
             return (
@@ -91,6 +127,8 @@ class App extends Component {
                     todo={todo}
                     handleTodoCheckboxChange={this.handleTodoCheckboxChange}
                     toggleTodoEdit={this.toggleTodoEdit}
+                    handleTodoChange={this.handleTodoChange}
+                    saveUpdatedTodo={this.saveUpdatedTodo}
                 />
             );
         })

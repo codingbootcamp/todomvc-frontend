@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Classnames from 'classnames';
 
-const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit}) => {
+const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange, saveUpdatedTodo}) => {
     const handleChange = () =>
         handleTodoCheckboxChange({
             ...todo,
@@ -10,6 +10,16 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit}) => {
         });
 
     const toggleEdit = () => toggleTodoEdit(todo);
+
+    const handleTodoOnChange = e => {
+        const title = e.target.value;
+        handleTodoChange(todo._id, title);
+    };
+
+    const handleTodoSave = e => {
+        e.preventDefault();
+        saveUpdatedTodo(todo);
+    }
 
     const renderTodoCheckbox = is_complete => {
         return (
@@ -24,6 +34,19 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit}) => {
         'complete': todo.is_complete,
         'loading': todo.is_loading
     });
+
+    if (todo.is_editing) {
+        return (
+            <li>
+                <form onSubmit={handleTodoSave}>
+                    <input type="text"
+                        className="form-control"
+                        value={todo.title}
+                        onChange={handleTodoOnChange}/>
+                </form>
+            </li>
+        );
+    }
 
     return (
         <li className={li_classes}>
@@ -49,5 +72,7 @@ Todo.propTypes = {
         is_complete: PropTypes.bool.isRequired
     }),
     handleTodoCheckboxChange: PropTypes.func.isRequired,
-    toggleTodoEdit: PropTypes.func.isRequired
+    toggleTodoEdit: PropTypes.func.isRequired,
+    handleTodoChange: PropTypes.func.isRequired,
+    saveUpdatedTodo: PropTypes.func.isRequired
 };
