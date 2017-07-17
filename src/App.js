@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Classnames from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/todo.css';
 import {getAllTodos} from './services/TodoService';
 
 class App extends Component {
@@ -38,8 +40,11 @@ class App extends Component {
             );
         }
         return this.state.todos.map((todo, index) => {
+            const li_classes = Classnames({
+                'complete': todo.is_complete
+            });
             return (
-                <li key={index}>
+                <li key={index} className={li_classes}>
                     {this.renderTodoCheckbox(todo.is_complete)}
                     {todo.title}
                 </li>
