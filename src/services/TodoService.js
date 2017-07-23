@@ -1,4 +1,5 @@
 import axios from 'axios';
+import FilterTypes from '../constants/FilterTypes';
 
 const uri_prefix = 'http://localhost:8000';
 
@@ -31,4 +32,18 @@ export function saveTodo(todo_title) {
     return axios
             .post(`${uri_prefix}/todos/`, new_todo)
             .then(response => response.data);
+}
+
+export function filterTodos(todos, filter_type) {
+    switch (filter_type) {
+        case FilterTypes.COMPLETED:
+            return todos.filter(todo => todo.is_complete);
+
+        case FilterTypes.PENDING:
+            return todos.filter(todo => !todo.is_complete);
+
+        case FilterTypes.ALL:
+        default:
+            return todos;
+    }
 }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
-import {getAllTodos, updateTodo, deleteTodo, saveTodo} from './services/TodoService';
+import {getAllTodos, updateTodo, deleteTodo, saveTodo, filterTodos} from './services/TodoService';
 import Todo from './components/Todo';
+import Filter from './components/Filter';
+import FilterTypes from './constants/FilterTypes';
 
 const new_todo = {
     title: '',
@@ -15,6 +17,7 @@ class App extends Component {
         super(props);
         this.state = {
             todos: [],
+            filter_type: FilterTypes.ALL,
             has_loaded: false,
             new_todo
         };
@@ -28,6 +31,7 @@ class App extends Component {
         this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
         this.toggleNewTodoEdit = this.toggleNewTodoEdit.bind(this);
         this.handleNewTodoSave = this.handleNewTodoSave.bind(this);
+        this.handleFilterTodos = this.handleFilterTodos.bind(this);
     }
 
     componentWillMount() {
@@ -183,7 +187,9 @@ class App extends Component {
                 </li>
             );
         }
-        return this.state.todos.map((todo, index) => {
+        const filtered_todos = filterTodos(this.state.todos, this.state.filter_type);
+
+        return filtered_todos.map((todo, index) => {
             return (
                 <Todo key={index}
                     todo={todo}
@@ -225,6 +231,12 @@ class App extends Component {
         return null;
     }
 
+    handleFilterTodos(filter_type) {
+        this.setState({
+            filter_type
+        });
+    }
+
     render() {
         return (
             <div className="container">
@@ -236,6 +248,9 @@ class App extends Component {
                             <ul>
                                 {this.renderAllTodos()}
                             </ul>
+                            <Filter
+                                selected_filter_type={this.state.filter_type}
+                                handleFilterTodos={this.handleFilterTodos}/>
                         </div>
                     </div>
                 </div>
