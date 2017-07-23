@@ -6,7 +6,7 @@ import Todo from './components/Todo';
 import Filter from './components/Filter';
 import FilterTypes from './constants/FilterTypes';
 
-const new_todo = {
+const default_new_todo = {
     title: '',
     is_saving: false,
     is_visible: false
@@ -19,7 +19,7 @@ class App extends Component {
             todos: [],
             filter_type: FilterTypes.ALL,
             has_loaded: false,
-            new_todo
+            new_todo: default_new_todo
         };
 
         this.renderAllTodos = this.renderAllTodos.bind(this);
@@ -102,6 +102,9 @@ class App extends Component {
 
     handleNewTodoSave(e) {
         e.preventDefault();
+
+        if (!this.state.new_todo.title.trim().length) return;
+
         this.setState({
             ...this.state,
             new_todo: {
@@ -114,7 +117,7 @@ class App extends Component {
             const updated_todos = getTodosWithIsLoadingState(todos);
             this.setState({
                 todos: updated_todos,
-                new_todo
+                new_todo: default_new_todo
             });
         });
     }
@@ -215,6 +218,7 @@ class App extends Component {
                     placeholder="Add a new todo"
                     value={this.state.new_todo.title}
                     onChange={this.handleNewTodoChange}
+                    onBlur={this.handleNewTodoSave}
                 />
             </form>
         )

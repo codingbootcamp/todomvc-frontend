@@ -47,7 +47,8 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
                     <input type="text"
                         className="form-control"
                         value={todo.title}
-                        onChange={handleTodoOnChange}/>
+                        onChange={handleTodoOnChange}
+                        onBlur={handleTodoSave}/>
                 </form>
             </li>
         );
