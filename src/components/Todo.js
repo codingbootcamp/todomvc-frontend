@@ -48,7 +48,8 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
                         className="form-control"
                         value={todo.title}
                         onChange={handleTodoOnChange}
-                        onBlur={handleTodoSave}/>
+                        onBlur={handleTodoSave}
+                        autoFocus={true}/>
                 </form>
             </li>
         );

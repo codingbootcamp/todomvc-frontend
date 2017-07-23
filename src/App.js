@@ -103,7 +103,12 @@ class App extends Component {
     handleNewTodoSave(e) {
         e.preventDefault();
 
-        if (!this.state.new_todo.title.trim().length) return;
+        if (!this.state.new_todo.title.trim().length) {
+            this.setState({
+                new_todo: default_new_todo
+            });
+            return;
+        };
 
         this.setState({
             ...this.state,
@@ -219,6 +224,7 @@ class App extends Component {
                     value={this.state.new_todo.title}
                     onChange={this.handleNewTodoChange}
                     onBlur={this.handleNewTodoSave}
+                    autoFocus={true}
                 />
             </form>
         )
