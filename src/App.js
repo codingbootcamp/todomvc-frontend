@@ -197,6 +197,12 @@ class App extends Component {
         }
         const filtered_todos = filterTodos(this.state.todos, this.state.filter_type);
 
+        if (!filtered_todos.length) return (
+            <li>
+                No todos found!
+            </li>
+        );
+
         return filtered_todos.map((todo, index) => {
             return (
                 <Todo key={index}
