@@ -6,7 +6,7 @@ const IS_PROD = true;
 let uri_prefix = 'http://localhost:8000';
 
 if (IS_PROD) {
-    uri_prefix = 'https://bootcamptodoapp.herokuapp.com';
+    uri_prefix = 'https://todoappbackend.herokuapp.com';
 }
 
 export function getAllTodos() {
