@@ -50,7 +50,8 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
                         value={todo.title}
                         onChange={handleTodoOnChange}
                         onBlur={handleTodoSave}
-                        autoFocus={true}/>
+                        autoFocus={true}
+                        disabled={todo.is_loading}/>
                 </form>
             </li>
         );
