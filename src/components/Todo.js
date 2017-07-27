@@ -31,7 +31,8 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
             <input
                 type="checkbox"
                 checked={is_complete}
-                onChange={handleChange}/>
+                onChange={handleChange}
+                disabled={todo.is_loading}/>
         );
     };
 
@@ -63,11 +64,13 @@ const Todo = ({todo, handleTodoCheckboxChange, toggleTodoEdit, handleTodoChange,
             </span>
             <span className="pull-right">
                 <button className="btn btn-link edit-icon-button"
-                    onClick={toggleEdit}>
+                    onClick={toggleEdit}
+                    disabled={todo.is_loading}>
                     <i className="glyphicon glyphicon-pencil"/>
                 </button>
                 <button className="btn btn-link delete-icon-button"
-                    onClick={deleteTodo}>
+                    onClick={deleteTodo}
+                    disabled={todo.is_loading}>
                     <i className="glyphicon glyphicon-trash"/>
                 </button>
             </span>

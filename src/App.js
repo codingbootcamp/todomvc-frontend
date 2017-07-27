@@ -231,6 +231,7 @@ class App extends Component {
                     onChange={this.handleNewTodoChange}
                     onBlur={this.handleNewTodoSave}
                     autoFocus={true}
+                    readOnly={this.state.new_todo.is_saving}
                 />
             </form>
         )
