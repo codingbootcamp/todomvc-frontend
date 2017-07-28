@@ -1,8 +1,6 @@
 import axios from 'axios';
 import FilterTypes from '../constants/FilterTypes';
-
-const IS_PROD = true;
-
+const IS_PROD = process.env.NODE_ENV !== 'development';
 let uri_prefix = 'http://localhost:8000';
 
 if (IS_PROD) {
