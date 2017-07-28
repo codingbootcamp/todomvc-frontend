@@ -3,11 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/todo.css';
 import {getAllTodos, updateTodo, deleteTodo, saveTodo, filterTodos} from './services/TodoService';
 import Todo from './components/Todo';
+import NewTodoForm from './components/NewTodoForm';
+import AddTodoButton from './components/AddTodoButton';
 import Filter from './components/Filter';
 import FilterTypes from './constants/FilterTypes';
 
 const default_new_todo = {
-    title: '',
     is_saving: false,
     is_visible: false
 };
@@ -28,7 +29,6 @@ class App extends Component {
         this.handleTodoChange = this.handleTodoChange.bind(this);
         this.saveUpdatedTodo = this.saveUpdatedTodo.bind(this);
         this.handleTodoDelete = this.handleTodoDelete.bind(this);
-        this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
         this.toggleNewTodoEdit = this.toggleNewTodoEdit.bind(this);
         this.handleNewTodoSave = this.handleNewTodoSave.bind(this);
         this.handleFilterTodos = this.handleFilterTodos.bind(this);
@@ -89,21 +89,8 @@ class App extends Component {
         })
     }
 
-    handleNewTodoChange(e) {
-        const updated_title = e.target.value;
-        this.setState({
-            ...this.state,
-            new_todo: {
-                ...this.state.new_todo,
-                title: updated_title
-            }
-        });
-    }
-
-    handleNewTodoSave(e) {
-        e.preventDefault();
-
-        if (!this.state.new_todo.title.trim().length) {
+    handleNewTodoSave(title) {
+        if (!title.trim().length) {
             this.setState({
                 new_todo: default_new_todo
             });
@@ -117,7 +104,7 @@ class App extends Component {
                 is_saving: true
             }
         });
-        saveTodo(this.state.new_todo.title).then(new_todo => {
+        saveTodo(title).then(new_todo => {
             const todos = [...this.state.todos, new_todo];
             const updated_todos = getTodosWithIsLoadingState(todos);
             this.setState({
@@ -217,37 +204,6 @@ class App extends Component {
         })
     }
 
-    renderNewTodoForm() {
-        if (!this.state.new_todo.is_visible) {
-            return null;
-        }
-        return (
-            <form onSubmit={this.handleNewTodoSave}>
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Add a new todo"
-                    value={this.state.new_todo.title}
-                    onChange={this.handleNewTodoChange}
-                    onBlur={this.handleNewTodoSave}
-                    autoFocus={true}
-                    readOnly={this.state.new_todo.is_saving}
-                />
-            </form>
-        )
-    }
-
-    renderAddTodoButton() {
-        if (!this.state.new_todo.is_visible) {
-            return (
-                <button className="btn btn-primary" onClick={this.toggleNewTodoEdit}>
-                    <i className="glyphicon glyphicon-plus-sign"/>
-                </button>
-            );
-        }
-        return null;
-    }
-
     handleFilterTodos(filter_type) {
         this.setState({
             filter_type
@@ -260,8 +216,14 @@ class App extends Component {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="todo-list">
-                            {this.renderAddTodoButton()}
-                            {this.renderNewTodoForm()}
+                            {!this.state.new_todo.is_visible &&
+                                <AddTodoButton toggleNewTodoEdit={this.toggleNewTodoEdit}/>
+                            }
+                            {this.state.new_todo.is_visible &&
+                                <NewTodoForm
+                                    is_saving={this.state.new_todo.is_saving}
+                                    handleNewTodoSave={this.handleNewTodoSave}/>
+                            }
                             <ul>
                                 {this.renderAllTodos()}
                             </ul>
